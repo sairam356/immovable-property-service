@@ -1,5 +1,7 @@
 package com.immovable.propertyservice.entities;
 
+import java.math.BigDecimal;
+
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -17,8 +19,8 @@ public class PropertyMetaData {
 	private String id;
 	private String description1;
 	private String description2;
-	private Double annualGrossRent;
-	private Double serivceCharges;
-	private Double maintainceCharges;
-	private Double annualNetIncome;
+	private BigDecimal annualGrossRent;
+	private BigDecimal serivceCharges;
+	private BigDecimal maintainceCharges;
+	private BigDecimal annualNetIncome;
 }

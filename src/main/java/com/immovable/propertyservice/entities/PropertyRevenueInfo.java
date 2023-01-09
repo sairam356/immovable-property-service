@@ -1,5 +1,6 @@
 package com.immovable.propertyservice.entities;
 
+import java.math.BigDecimal;
 import java.util.Date;
 
 import org.springframework.data.annotation.Id;
@@ -19,7 +20,7 @@ public class PropertyRevenueInfo {
 	private String  id;
 	private String  year;
 	private String  month;
-	private Double  actualAmount;
-	private Double  receivedAmount ;
+	private BigDecimal  actualAmount;
+	private BigDecimal  receivedAmount ;
 	private Date    receivedDate;
 }

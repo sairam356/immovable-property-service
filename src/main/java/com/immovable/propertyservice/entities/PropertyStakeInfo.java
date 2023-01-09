@@ -17,8 +17,8 @@ public class PropertyStakeInfo {
 
 	@Id
 	private String id;
-	private String stake_funded;
-	private String stake_avaliable;
+	private Double stake_funded;
+	private Double stake_avaliable;
 	private String actionByCustomerId;
 	private Date  createdDt;
 }
