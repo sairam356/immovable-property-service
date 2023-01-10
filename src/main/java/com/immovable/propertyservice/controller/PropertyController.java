@@ -39,9 +39,9 @@ public class PropertyController {
 
 	}
 
-	@GetMapping("/test/test")
-	public void test() {
-		propertyService.test();
+	@GetMapping("/dummyApiPropCreate")
+	public void dummyApiToCreateAProperty() {
+		propertyService.dummyApiToCreateAProperty();
 	}
 
 }

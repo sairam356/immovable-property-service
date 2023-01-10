@@ -1,0 +1,275 @@
+[
+    {
+       
+        "name": "RentedProperty",
+        "country": "India",
+        "state": "Pune",
+        "imageUrl": "http://drive.google.com/uc?export=view&id=13V4GL1fev3j0E2sy6ZdkMlvSQY4ZkbJf",
+        "currency": "Rupees",
+        "occupancyRate": 70,
+        "actualpropertyPrice": 1000000,
+        "transcationCostPrice": 12312,
+        "totalInvestmentCost": 1012312,
+        "status": "Active",
+        "propertyMetaData": {
+            "description1": "1 Bed in Index Tower DIFC :  1 BedRoom | 2 BathRoom | 1,333 sqft | DIFC : Pune India  : It has more occupany rate and fully furinished Apartment ",
+            "description2": "Residental Area : Professionally managed  rental for families",
+            "annualGrossRent": 120000,
+            "serivceCharges": 1000,
+            "maintainceCharges": 1000,
+            "annualNetIncome": 100000
+        },
+        "propertyStakeInfo": [
+            {
+               
+                "stake_funded": 0.0,
+                "stake_avaliable": 100.0,
+                "actionByCustomerId": null
+               
+            }
+        ],
+        "propertyRevenueInfo": [
+            {
+               
+                "year": "2022",
+                "month": "Dec",
+                "actualAmount": 12000,
+                "receivedAmount": 12000    
+            }
+        ]
+    },
+     {
+       
+        "name": "RentedProperty",
+        "country": "India",
+        "state": "Pune",
+        "imageUrl": "http://drive.google.com/uc?export=view&id=13V4GL1fev3j0E2sy6ZdkMlvSQY4ZkbJf",
+        "currency": "Rupees",
+        "occupancyRate": 70,
+        "actualpropertyPrice": 1000000,
+        "transcationCostPrice": 12312,
+        "totalInvestmentCost": 1012312,
+        "status": "Active",
+        "propertyMetaData": {
+            "description1": "1 Bed in Index Tower DIFC :  1 BedRoom | 2 BathRoom | 1,333 sqft | DIFC : Pune India  : It has more occupany rate and fully furinished Apartment ",
+            "description2": "Residental Area : Professionally managed  rental for families",
+            "annualGrossRent": 120000,
+            "serivceCharges": 1000,
+            "maintainceCharges": 1000,
+            "annualNetIncome": 100000
+        },
+        "propertyStakeInfo": [
+            {
+               
+                "stake_funded": 0.0,
+                "stake_avaliable": 100.0,
+                "actionByCustomerId": null
+               
+            }
+        ],
+        "propertyRevenueInfo": [
+            {
+               
+                "year": "2022",
+                "month": "Dec",
+                "actualAmount": 12000,
+                "receivedAmount": 12000    
+            }
+        ]
+    },
+     {
+       
+        "name": "RentedProperty",
+        "country": "India",
+        "state": "Pune",
+        "imageUrl": "http://drive.google.com/uc?export=view&id=13V4GL1fev3j0E2sy6ZdkMlvSQY4ZkbJf",
+        "currency": "Rupees",
+        "occupancyRate": 70,
+        "actualpropertyPrice": 1000000,
+        "transcationCostPrice": 12312,
+        "totalInvestmentCost": 1012312,
+        "status": "Active",
+        "propertyMetaData": {
+            "description1": "1 Bed in Index Tower DIFC :  1 BedRoom | 2 BathRoom | 1,333 sqft | DIFC : Pune India  : It has more occupany rate and fully furinished Apartment ",
+            "description2": "Residental Area : Professionally managed  rental for families",
+            "annualGrossRent": 120000,
+            "serivceCharges": 1000,
+            "maintainceCharges": 1000,
+            "annualNetIncome": 100000
+        },
+        "propertyStakeInfo": [
+            {
+               
+                "stake_funded": 0.0,
+                "stake_avaliable": 100.0,
+                "actionByCustomerId": null
+               
+            }
+        ],
+        "propertyRevenueInfo": [
+            {
+               
+                "year": "2022",
+                "month": "Dec",
+                "actualAmount": 12000,
+                "receivedAmount": 12000    
+            }
+        ]
+    },
+     {
+       
+        "name": "RentedProperty",
+        "country": "India",
+        "state": "Pune",
+        "imageUrl": "http://drive.google.com/uc?export=view&id=13V4GL1fev3j0E2sy6ZdkMlvSQY4ZkbJf",
+        "currency": "Rupees",
+        "occupancyRate": 70,
+        "actualpropertyPrice": 1000000,
+        "transcationCostPrice": 12312,
+        "totalInvestmentCost": 1012312,
+        "status": "Active",
+        "propertyMetaData": {
+            "description1": "1 Bed in Index Tower DIFC :  1 BedRoom | 2 BathRoom | 1,333 sqft | DIFC : Pune India  : It has more occupany rate and fully furinished Apartment ",
+            "description2": "Residental Area : Professionally managed  rental for families",
+            "annualGrossRent": 120000,
+            "serivceCharges": 1000,
+            "maintainceCharges": 1000,
+            "annualNetIncome": 100000
+        },
+        "propertyStakeInfo": [
+            {
+               
+                "stake_funded": 0.0,
+                "stake_avaliable": 100.0,
+                "actionByCustomerId": null
+               
+            }
+        ],
+        "propertyRevenueInfo": [
+            {
+               
+                "year": "2022",
+                "month": "Dec",
+                "actualAmount": 12000,
+                "receivedAmount": 12000    
+            }
+        ]
+    },
+     {
+       
+        "name": "RentedProperty",
+        "country": "India",
+        "state": "Pune",
+        "imageUrl": "http://drive.google.com/uc?export=view&id=13V4GL1fev3j0E2sy6ZdkMlvSQY4ZkbJf",
+        "currency": "Rupees",
+        "occupancyRate": 70,
+        "actualpropertyPrice": 1000000,
+        "transcationCostPrice": 12312,
+        "totalInvestmentCost": 1012312,
+        "status": "Active",
+        "propertyMetaData": {
+            "description1": "1 Bed in Index Tower DIFC :  1 BedRoom | 2 BathRoom | 1,333 sqft | DIFC : Pune India  : It has more occupany rate and fully furinished Apartment ",
+            "description2": "Residental Area : Professionally managed  rental for families",
+            "annualGrossRent": 120000,
+            "serivceCharges": 1000,
+            "maintainceCharges": 1000,
+            "annualNetIncome": 100000
+        },
+        "propertyStakeInfo": [
+            {
+               
+                "stake_funded": 0.0,
+                "stake_avaliable": 100.0,
+                "actionByCustomerId": null
+               
+            }
+        ],
+        "propertyRevenueInfo": [
+            {
+               
+                "year": "2022",
+                "month": "Dec",
+                "actualAmount": 12000,
+                "receivedAmount": 12000    
+            }
+        ]
+    },
+     {
+       
+        "name": "RentedProperty",
+        "country": "India",
+        "state": "Pune",
+        "imageUrl": "http://drive.google.com/uc?export=view&id=13V4GL1fev3j0E2sy6ZdkMlvSQY4ZkbJf",
+        "currency": "Rupees",
+        "occupancyRate": 70,
+        "actualpropertyPrice": 1000000,
+        "transcationCostPrice": 12312,
+        "totalInvestmentCost": 1012312,
+        "status": "Active",
+        "propertyMetaData": {
+            "description1": "1 Bed in Index Tower DIFC :  1 BedRoom | 2 BathRoom | 1,333 sqft | DIFC : Pune India  : It has more occupany rate and fully furinished Apartment ",
+            "description2": "Residental Area : Professionally managed  rental for families",
+            "annualGrossRent": 120000,
+            "serivceCharges": 1000,
+            "maintainceCharges": 1000,
+            "annualNetIncome": 100000
+        },
+        "propertyStakeInfo": [
+            {
+               
+                "stake_funded": 0.0,
+                "stake_avaliable": 100.0,
+                "actionByCustomerId": null
+               
+            }
+        ],
+        "propertyRevenueInfo": [
+            {
+               
+                "year": "2022",
+                "month": "Dec",
+                "actualAmount": 12000,
+                "receivedAmount": 12000    
+            }
+        ]
+    },
+     {
+       
+        "name": "RentedProperty",
+        "country": "India",
+        "state": "Pune",
+        "imageUrl": "http://drive.google.com/uc?export=view&id=13V4GL1fev3j0E2sy6ZdkMlvSQY4ZkbJf",
+        "currency": "Rupees",
+        "occupancyRate": 70,
+        "actualpropertyPrice": 1000000,
+        "transcationCostPrice": 12312,
+        "totalInvestmentCost": 1012312,
+        "status": "Active",
+        "propertyMetaData": {
+            "description1": "1 Bed in Index Tower DIFC :  1 BedRoom | 2 BathRoom | 1,333 sqft | DIFC : Pune India  : It has more occupany rate and fully furinished Apartment ",
+            "description2": "Residental Area : Professionally managed  rental for families",
+            "annualGrossRent": 120000,
+            "serivceCharges": 1000,
+            "maintainceCharges": 1000,
+            "annualNetIncome": 100000
+        },
+        "propertyStakeInfo": [
+            {
+               
+                "stake_funded": 0.0,
+                "stake_avaliable": 100.0,
+                "actionByCustomerId": null
+               
+            }
+        ],
+        "propertyRevenueInfo": [
+            {
+               
+                "year": "2022",
+                "month": "Dec",
+                "actualAmount": 12000,
+                "receivedAmount": 12000    
+            }
+        ]
+    }
+]

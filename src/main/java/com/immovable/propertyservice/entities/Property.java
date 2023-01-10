@@ -24,7 +24,7 @@ public class Property {
 	private String state;
 	private String imageUrl;
 	private String currency;
-	private String occupancyRate;
+	private BigDecimal occupancyRate;
 	private BigDecimal actualpropertyPrice;
 	private BigDecimal transcationCostPrice;
     private BigDecimal totalInvestmentCost;//  (actualpropertyPrice+transcationCostPrice)

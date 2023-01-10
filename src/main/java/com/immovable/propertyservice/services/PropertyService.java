@@ -13,6 +13,6 @@ public interface PropertyService {
 	
 	public Map<String, Property> getPropertyById(String id);
 	
-	public void test();
+	public void dummyApiToCreateAProperty();
 	
 }

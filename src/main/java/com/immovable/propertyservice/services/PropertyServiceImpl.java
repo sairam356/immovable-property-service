@@ -103,18 +103,18 @@ public class PropertyServiceImpl implements PropertyService {
 	}
 	
 	
-	public void test() {
+	public void dummyApiToCreateAProperty() {
 		
 
 		Property p = new Property();
-		p.setName("RentedFlat");
+		p.setName("RentedProperty");
 		p.setCountry("India");
 		p.setCurrency("Rupees");
 		p.setImageUrl("http://drive.google.com/uc?export=view&id=13V4GL1fev3j0E2sy6ZdkMlvSQY4ZkbJf");
 		p.setActualpropertyPrice(new BigDecimal("1000000"));
 		p.setTranscationCostPrice(new BigDecimal("12312"));        
 	    p.setTotalInvestmentCost(p.getActualpropertyPrice().add(p.getTranscationCostPrice()));
-		p.setOccupancyRate("80%");
+		p.setOccupancyRate(new BigDecimal("70"));
 		p.setStatus("Active");
 		p.setState("Pune");
 		
