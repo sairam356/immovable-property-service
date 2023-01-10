@@ -150,8 +150,8 @@ public class PropertyServiceImpl implements PropertyService {
 		List<PropertyStakeInfo> liSt = new ArrayList<>();
 		
 		PropertyStakeInfo psi = new PropertyStakeInfo();
-	    psi.setStake_avaliable(100.00);
-	    psi.setStake_funded(0.00);
+	    psi.setStake_avaliable(new BigDecimal("100.00"));
+	    psi.setStake_funded(new BigDecimal("0.00"));
 	    psi.setCreatedDt(new Date());
 		liSt.add(propertyStakeInfoRepository.save(psi));
 		p.setPropertyStakeInfo(liSt);

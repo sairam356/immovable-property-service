@@ -1,5 +1,6 @@
 package com.immovable.propertyservice.entities;
 
+import java.math.BigDecimal;
 import java.util.Date;
 
 import org.springframework.data.annotation.Id;
@@ -17,8 +18,8 @@ public class PropertyStakeInfo {
 
 	@Id
 	private String id;
-	private Double stake_funded;
-	private Double stake_avaliable;
+	private BigDecimal stake_funded;
+	private BigDecimal stake_avaliable;
 	private String actionByCustomerId;
 	private Date  createdDt;
 }
