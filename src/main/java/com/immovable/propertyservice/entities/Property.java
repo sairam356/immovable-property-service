@@ -32,7 +32,7 @@ public class Property {
 	@DBRef
 	private PropertyMetaData propertyMetaData;
 	@DBRef
-	private List<PropertyStakeInfo> propertyStakeInfo;
+	private PropertyStakeInfo propertyStakeInfo;
 	@DBRef
 	private List<PropertyRevenueInfo> propertyRevenueInfo;
 	

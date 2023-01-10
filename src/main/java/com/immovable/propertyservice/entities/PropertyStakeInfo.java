@@ -20,6 +20,7 @@ public class PropertyStakeInfo {
 	private String id;
 	private BigDecimal stake_funded;
 	private BigDecimal stake_avaliable;
-	private String actionByCustomerId;
+    private BigDecimal totalInvestmentAmount ;
+    private BigDecimal totalAvaliableAmount;
 	private Date  createdDt;
 }

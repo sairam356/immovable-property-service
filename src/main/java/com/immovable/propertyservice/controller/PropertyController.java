@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.immovable.propertyservice.dto.PropertyStakeReqDTO;
 import com.immovable.propertyservice.entities.Property;
 import com.immovable.propertyservice.services.PropertyService;
 
@@ -36,6 +37,13 @@ public class PropertyController {
 	@GetMapping
 	public List<Property> getPropertyData() {
 		return propertyService.getPropertyData();
+
+	}
+
+	@PostMapping("/allocateStake")
+	public Map<String, String> updateStakeInfo(@RequestBody PropertyStakeReqDTO propertyStakeReqDTO) {
+
+		return propertyService.updateStakeInfo(propertyStakeReqDTO);
 
 	}
 
