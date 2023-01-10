@@ -19,15 +19,15 @@
             "maintainceCharges": 1000,
             "annualNetIncome": 100000
         },
-        "propertyStakeInfo": [
+        "propertyStakeInfo": 
             {
                
                 "stake_funded": 0.0,
                 "stake_avaliable": 100.0,
                 "actionByCustomerId": null
                
-            }
-        ],
+            },
+        
         "propertyRevenueInfo": [
             {
                
@@ -58,15 +58,14 @@
             "maintainceCharges": 1000,
             "annualNetIncome": 100000
         },
-        "propertyStakeInfo": [
+       "propertyStakeInfo": 
             {
                
                 "stake_funded": 0.0,
                 "stake_avaliable": 100.0,
                 "actionByCustomerId": null
                
-            }
-        ],
+            },
         "propertyRevenueInfo": [
             {
                
@@ -97,15 +96,14 @@
             "maintainceCharges": 1000,
             "annualNetIncome": 100000
         },
-        "propertyStakeInfo": [
+        "propertyStakeInfo": 
             {
                
                 "stake_funded": 0.0,
                 "stake_avaliable": 100.0,
                 "actionByCustomerId": null
                
-            }
-        ],
+            },
         "propertyRevenueInfo": [
             {
                
@@ -136,15 +134,14 @@
             "maintainceCharges": 1000,
             "annualNetIncome": 100000
         },
-        "propertyStakeInfo": [
+        "propertyStakeInfo": 
             {
                
                 "stake_funded": 0.0,
                 "stake_avaliable": 100.0,
                 "actionByCustomerId": null
                
-            }
-        ],
+            },
         "propertyRevenueInfo": [
             {
                
@@ -175,15 +172,14 @@
             "maintainceCharges": 1000,
             "annualNetIncome": 100000
         },
-        "propertyStakeInfo": [
+        "propertyStakeInfo": 
             {
                
                 "stake_funded": 0.0,
                 "stake_avaliable": 100.0,
                 "actionByCustomerId": null
                
-            }
-        ],
+            },
         "propertyRevenueInfo": [
             {
                
@@ -214,15 +210,14 @@
             "maintainceCharges": 1000,
             "annualNetIncome": 100000
         },
-        "propertyStakeInfo": [
+        "propertyStakeInfo": 
             {
                
                 "stake_funded": 0.0,
                 "stake_avaliable": 100.0,
                 "actionByCustomerId": null
                
-            }
-        ],
+            },
         "propertyRevenueInfo": [
             {
                
@@ -253,15 +248,14 @@
             "maintainceCharges": 1000,
             "annualNetIncome": 100000
         },
-        "propertyStakeInfo": [
+       "propertyStakeInfo": 
             {
                
                 "stake_funded": 0.0,
                 "stake_avaliable": 100.0,
                 "actionByCustomerId": null
                
-            }
-        ],
+            },
         "propertyRevenueInfo": [
             {
                
