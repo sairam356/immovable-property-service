@@ -28,7 +28,7 @@ public class WalletTransaction {
 
     private TransactionStatus transactionStatus;
 
-    private BigDecimal amount;
+    private BigDecimal amount = BigDecimal.ZERO;
 
     @CreatedDate
     private LocalDateTime createdDate;

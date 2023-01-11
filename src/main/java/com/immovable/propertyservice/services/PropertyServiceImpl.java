@@ -1,6 +1,7 @@
 package com.immovable.propertyservice.services;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -106,26 +107,39 @@ public class PropertyServiceImpl implements PropertyService {
 					}
 
 				});
-				resultMap.put("status","success");
+				resultMap.put("status", "success");
 			}
 		} catch (Exception e) {
-			resultMap.put("status",e.getMessage());
+			resultMap.put("status", e.getMessage());
+			e.printStackTrace();
+			
 		}
 		return resultMap;
 	}
 
 	private PropertyStakeInfo updatePropertyStakeInfo(Property propertyObj, PropertyStakeReqDTO propertyStakeReqDTO) {
 
+		BigDecimal propetyInvestAmount = propertyObj.getTotalInvestmentCost();
 		PropertyStakeInfo obj = new PropertyStakeInfo();
 		PropertyStakeInfo propertyStakeInfo = propertyObj.getPropertyStakeInfo();
-		/*
-		 * obj.setStake_avaliable(stake_avaliable); obj.setStake_funded(stake_funded);
-		 * obj.setTotalAvaliableAmount(totalAvaliableAmount);
-		 * obj.setActionByCustomerId(propertyStakeReqDTO.getCustomerId());
-		 * obj.setCreatedDt(new Date());
-		 */
+		BigDecimal StackInvestmentAmount = propertyStakeInfo.getTotalInvestmentAmount()
+				.add(propertyStakeReqDTO.getInvestmentAmount());
+		BigDecimal totalAvaliableAmount = propetyInvestAmount.subtract(StackInvestmentAmount);
 
-		return propertyStakeInfo;
+		BigDecimal fundedAmtPer = StackInvestmentAmount.divide(propetyInvestAmount,2,RoundingMode.HALF_UP);
+
+		BigDecimal stackAvaliPer = totalAvaliableAmount.divide(propetyInvestAmount,2,RoundingMode.HALF_UP);
+
+		BigDecimal avalible = stackAvaliPer.multiply(new BigDecimal("100"));
+		BigDecimal multiply = fundedAmtPer.multiply(new BigDecimal("100"));
+		obj.setStake_avaliable(avalible);
+		obj.setStake_funded(multiply);
+		obj.setTotalAvaliableAmount(totalAvaliableAmount);
+		obj.setTotalInvestmentAmount(StackInvestmentAmount);
+		obj.setCreatedDt(new Date());
+		obj.setId(propertyStakeInfo.getId());
+
+		return propertyStakeInfoRepository.save(obj);
 	}
 
 	public void dummyApiToCreateAProperty() {
@@ -136,7 +150,7 @@ public class PropertyServiceImpl implements PropertyService {
 		p.setCurrency("Rupees");
 		p.setImageUrl("http://drive.google.com/uc?export=view&id=13V4GL1fev3j0E2sy6ZdkMlvSQY4ZkbJf");
 		p.setActualpropertyPrice(new BigDecimal("1000000"));
-		p.setTranscationCostPrice(new BigDecimal("12312"));
+		p.setTranscationCostPrice(new BigDecimal("100"));
 		p.setTotalInvestmentCost(p.getActualpropertyPrice().add(p.getTranscationCostPrice()));
 		p.setOccupancyRate(new BigDecimal("70"));
 		p.setStatus("Active");
@@ -167,7 +181,7 @@ public class PropertyServiceImpl implements PropertyService {
 		PropertyStakeInfo psi = new PropertyStakeInfo();
 		psi.setStake_avaliable(new BigDecimal("100.00"));
 		psi.setStake_funded(new BigDecimal("0.00"));
-		psi.setTotalInvestmentAmount(p.getTotalInvestmentCost());
+		psi.setTotalInvestmentAmount(new BigDecimal("0.00"));
 		psi.setTotalAvaliableAmount(p.getTotalInvestmentCost());
 		psi.setCreatedDt(new Date());
 
