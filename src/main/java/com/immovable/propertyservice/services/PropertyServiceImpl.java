@@ -12,6 +12,7 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.immovable.propertyservice.dto.PropertyResponseDTO;
 import com.immovable.propertyservice.dto.PropertyStakeReqDTO;
 import com.immovable.propertyservice.entities.Property;
 import com.immovable.propertyservice.entities.PropertyMetaData;
@@ -38,17 +39,16 @@ public class PropertyServiceImpl implements PropertyService {
 	PropertyStakeInfoRepository propertyStakeInfoRepository;
 
 	@Override
-	public Map<String, Property> getPropertyById(String id) {
-
+	public  PropertyResponseDTO getPropertyById(String id) {
+		PropertyResponseDTO responseDTO = new PropertyResponseDTO();
 		Map<String, Property> map = new HashMap<String, Property>();
 		Optional<Property> propertyById = repository.findById(id);
-
 		if (propertyById.isPresent()) {
-			map.put(id, propertyById.get());
-			return map;
+			
+			responseDTO.setProperty(propertyById.get());
+			return responseDTO ;
 		}
-		map.put(id, new Property());
-		return map;
+		return responseDTO;
 
 	}
 
@@ -80,7 +80,6 @@ public class PropertyServiceImpl implements PropertyService {
 
 			});
 		}
-
 		return list;
 
 	}
