@@ -30,9 +30,7 @@ public class Property {
 	private BigDecimal transcationCostPrice;
     private BigDecimal totalInvestmentCost;//  (actualpropertyPrice+transcationCostPrice)
 	private String status;
-	
-	@Transient
-	private String count ;
+
 	
 	@DBRef
 	private PropertyMetaData propertyMetaData;
