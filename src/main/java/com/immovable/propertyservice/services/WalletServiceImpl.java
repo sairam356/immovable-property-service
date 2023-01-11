@@ -38,7 +38,6 @@ public class WalletServiceImpl implements WalletService {
 
 		Wallet walletInfo = getWalletInfo(walletTransaction.getWalletId());
 		List<WalletTransaction> walletTransactions = walletInfo.getWalletTransactions();
-
 		walletTransaction.setTransactionId(UUID.randomUUID().toString());
 		walletTransaction.setCreatedDate(LocalDateTime.now());
 		WalletTransaction tranObj = walletTransactionRepository.save(walletTransaction);
