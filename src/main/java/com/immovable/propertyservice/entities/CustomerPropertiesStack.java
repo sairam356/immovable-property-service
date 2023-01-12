@@ -18,7 +18,6 @@ public class CustomerPropertiesStack {
 
 	@Id
 	private String id;
-	/// private String customerId;
 	private String propertyId;
 	private BigDecimal stakepercentage;
 	private BigDecimal investedamount;

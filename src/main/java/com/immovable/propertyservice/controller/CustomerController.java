@@ -22,7 +22,7 @@ public class CustomerController {
 
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
-	public Map<String,String> saveProperty(@RequestBody Customer customer) {
+	public Map<String,String> saveCustomer(@RequestBody Customer customer) {
 		return customerService.saveCustomer(customer);
 
 	}

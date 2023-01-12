@@ -24,7 +24,7 @@ public class Customer {
 	private String address;
 	private String userId;
 	@DBRef
-	private CustomerPropertiesStack propertiesStack;
+	private List<CustomerPropertiesStack> propertiesStack;
 	@DBRef
 	private List<CustomerRevenue> customerRevenue;
 	@DBRef

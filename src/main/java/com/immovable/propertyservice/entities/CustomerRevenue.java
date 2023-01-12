@@ -17,7 +17,6 @@ public class CustomerRevenue {
 
 	@Id
 	private String id;
-	///private String customerId;
 	private String propertyId;
 	private String month;
 	private String year; 
