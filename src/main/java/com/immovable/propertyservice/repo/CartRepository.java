@@ -11,4 +11,7 @@ import java.util.Optional;
 public interface CartRepository extends MongoRepository<Cart, String> {
     @Query
     Optional<Cart> findByCustomerIdAndStatus(String customerId, String status);
+
+    @Query
+    Optional<Cart> findByCustomerId(String customerId);
 }

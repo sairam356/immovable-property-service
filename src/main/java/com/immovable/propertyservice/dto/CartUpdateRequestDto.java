@@ -1,17 +1,17 @@
 package com.immovable.propertyservice.dto;
 
-import java.math.BigDecimal;
-
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class CartRequestDto {
+public class CartUpdateRequestDto {
 
+    public String cartId;
     public String customerId;
-    public BigDecimal price;
-    public String propertyId;
+    public List<String> cartItemsIdsList;
 }

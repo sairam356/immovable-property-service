@@ -1,13 +1,21 @@
 package com.immovable.propertyservice.services;
 
 
-import com.immovable.propertyservice.dto.CartResponseDto;
+import java.util.Map;
 
-import java.math.BigDecimal;
+import com.immovable.propertyservice.dto.CartRequestDto;
+import com.immovable.propertyservice.dto.CartResponseDto;
+import com.immovable.propertyservice.dto.CartUpdateRequestDto;
 
 public interface CartService {
 
-    public String saveCartDetails(String customerId, BigDecimal price, String propertyId);
+    public Map<String,String> saveCartDetails(CartRequestDto cartRequestDto);
 
     public CartResponseDto getCartDetails(String customerId);
+
+    public String getCartUpdate(CartUpdateRequestDto cartUpdateRequestDto);
+
+    public String cartUpdateOnPaymentStatus(CartUpdateRequestDto cartUpdateRequestDto,String status);
+
+    public Map<String, Long> getCartsItems(String cartId, String customerId);
 }
