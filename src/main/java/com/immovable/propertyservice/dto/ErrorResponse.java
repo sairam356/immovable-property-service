@@ -1,19 +1,19 @@
 package com.immovable.propertyservice.dto;
 
+import lombok.Data;
+
 import java.util.List;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-
 @Data
-@NoArgsConstructor
-@AllArgsConstructor
-public class ErrorResponse {
+public class ErrorResponse{
+    private int errorCode;
+    private String message;
+    private List<String> description;
 
-	Integer errorCode;
+    public ErrorResponse(int errorCode, String message, List<String> description) {
+        this.errorCode = errorCode;
+        this.message = message;
+        this.description = description;
+    }
 
-	String message;
-
-	List<String> description;
 }

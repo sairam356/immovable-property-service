@@ -1,25 +1,25 @@
 package com.immovable.propertyservice.services;
 
-import java.time.LocalDateTime;
-import java.util.Collections;
-import java.util.List;
-import java.util.UUID;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import org.springframework.util.CollectionUtils;
-
+import com.immovable.propertyservice.enums.ResourceType;
+import com.immovable.propertyservice.dto.WalletTransactionDto;
 import com.immovable.propertyservice.entities.Wallet;
 import com.immovable.propertyservice.entities.WalletTransaction;
-import com.immovable.propertyservice.enums.ResourceType;
 import com.immovable.propertyservice.enums.TransactionType;
 import com.immovable.propertyservice.exception.BadRequestException;
 import com.immovable.propertyservice.exception.ResourceNotFoundException;
 import com.immovable.propertyservice.repo.WalletRepository;
 import com.immovable.propertyservice.repo.WalletTransactionRepository;
 import com.immovable.propertyservice.utils.BigDecimalUtils;
-
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
+
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.UUID;
 
 @Service
 @Slf4j
@@ -34,17 +34,32 @@ public class WalletServiceImpl implements WalletService {
 	@Override
 	public Wallet save(Wallet wallet) {
 		log.info("The wallet is being updated...");
-
-		wallet.setWalletTransactions(Collections.emptyList());
+		WalletTransaction walletTransactionDto = wallet.getWalletTransactions().get(0);
+		WalletTransaction walletTransaction = new WalletTransaction();
+		walletTransaction.setTransactionStatus(walletTransactionDto.getTransactionStatus());
+		walletTransaction.setTransactionType(walletTransactionDto.getTransactionType());
+		walletTransaction.setAmount(walletTransactionDto.getAmount());
+		walletTransaction.setWalletId(wallet.getId());
+		walletTransaction.setTransactionId(UUID.randomUUID().toString());
+		walletTransaction.setCreatedDate(LocalDateTime.now());
+		if (!CollectionUtils.isEmpty(wallet.getWalletTransactions())) {
+			updateWalletBalance(wallet, walletTransaction);
+		}
+		WalletTransaction tranObj = walletTransactionRepository.save(walletTransaction);
+		wallet.setWalletTransactions(new ArrayList<>(Collections.singleton(tranObj)));
 		wallet.setCreatedDate(LocalDateTime.now());
 		return walletRepository.save(wallet);
 	}
 
 	@Override
-	public WalletTransaction saveTransaction(WalletTransaction walletTransaction) {
-
-		Wallet walletInfo = getWalletInfo(walletTransaction.getWalletId());
+	public WalletTransaction saveTransaction(WalletTransactionDto walletTransactionDto) {
+		Wallet walletInfo = getWalletInfo(walletTransactionDto.getCustomerId());
 		List<WalletTransaction> walletTransactions = walletInfo.getWalletTransactions();
+		WalletTransaction walletTransaction = new WalletTransaction();
+		walletTransaction.setTransactionStatus(walletTransactionDto.getTransactionStatus());
+		walletTransaction.setTransactionType(walletTransactionDto.getTransactionType());
+		walletTransaction.setAmount(walletTransactionDto.getAmount());
+		walletTransaction.setWalletId(walletInfo.getId());
 		walletTransaction.setTransactionId(UUID.randomUUID().toString());
 		walletTransaction.setCreatedDate(LocalDateTime.now());
 		if (!CollectionUtils.isEmpty(walletInfo.getWalletTransactions())) {
@@ -70,8 +85,8 @@ public class WalletServiceImpl implements WalletService {
 	}
 
 	@Override
-	public Wallet getWalletInfo(String walletId) {
-		return walletRepository.findById(walletId)
+	public Wallet getWalletInfo(String customerId) {
+		return walletRepository.findByCustomerId(customerId)
 				.orElseThrow(() -> new ResourceNotFoundException(ResourceType.WALLET));
 	}
 }

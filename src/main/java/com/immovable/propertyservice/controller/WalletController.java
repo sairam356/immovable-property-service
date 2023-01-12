@@ -1,5 +1,6 @@
 package com.immovable.propertyservice.controller;
 
+import com.immovable.propertyservice.dto.WalletTransactionDto;
 import com.immovable.propertyservice.entities.Wallet;
 import com.immovable.propertyservice.entities.WalletTransaction;
 import com.immovable.propertyservice.services.WalletService;
@@ -22,12 +23,12 @@ public class WalletController {
 
     @PostMapping("/transaction")
     @ResponseStatus(HttpStatus.CREATED)
-    public WalletTransaction saveTransaction(@RequestBody WalletTransaction walletTransaction){
-        return walletService.saveTransaction(walletTransaction);
+    public WalletTransaction saveTransaction(@RequestBody WalletTransactionDto walletTransactionDto){
+        return walletService.saveTransaction(walletTransactionDto);
     }
 
-    @GetMapping("/getInfo/{walletId}")
-    public Wallet getWalletInfo(@PathVariable("walletId") String walletId){
-        return walletService.getWalletInfo(walletId);
+    @GetMapping("/getInfo/{customerId}")
+    public Wallet getWalletInfo(@PathVariable("customerId") String customerId){
+        return walletService.getWalletInfo(customerId);
     }
 }
