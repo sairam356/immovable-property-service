@@ -8,6 +8,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import java.math.BigDecimal;
+import java.util.Map;
+
 @RestController
 @RequestMapping("/wallet")
 public class WalletController {
@@ -30,5 +33,10 @@ public class WalletController {
     @GetMapping("/getInfo/{customerId}")
     public Wallet getWalletInfo(@PathVariable("customerId") String customerId){
         return walletService.getWalletInfo(customerId);
+    }
+
+    @GetMapping("/walletBalance/{customerId}")
+    public Map<String,BigDecimal> getWalletBalance(@PathVariable("customerId") String customerId){
+        return walletService.getBalance(customerId);
     }
 }

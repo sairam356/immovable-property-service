@@ -10,16 +10,15 @@ import com.immovable.propertyservice.exception.ResourceNotFoundException;
 import com.immovable.propertyservice.repo.WalletRepository;
 import com.immovable.propertyservice.repo.WalletTransactionRepository;
 import com.immovable.propertyservice.utils.BigDecimalUtils;
+import com.immovable.propertyservice.utils.CompareOperator;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 @Service
 @Slf4j
@@ -74,10 +73,13 @@ public class WalletServiceImpl implements WalletService {
 
 	private void updateWalletBalance(Wallet walletInfo, WalletTransaction walletTransaction) {
 		if (BigDecimalUtils.checkIfPositiveNonZero(walletTransaction.getAmount())) {
-			if (walletTransaction.getTransactionType().name().equalsIgnoreCase(TransactionType.DEPOSIT.name())) {
+			if (walletTransaction.getTransactionType().name().equalsIgnoreCase(TransactionType.DEPOSIT.name()) || walletTransaction.getTransactionType().name().equalsIgnoreCase(TransactionType.SELL.name())) {
 				walletInfo.setBalance(walletInfo.getBalance().add(walletTransaction.getAmount()));
-			} else {
+			} else if (BigDecimalUtils.checkIf(walletTransaction.getAmount(), CompareOperator.LESS_THAN_OR_EQUALS.name(), walletInfo.getBalance()) && (walletTransaction.getTransactionType().name().equalsIgnoreCase(TransactionType.WITHDRAW.name())
+					|| walletTransaction.getTransactionType().name().equalsIgnoreCase(TransactionType.BUY.name()))){
 				walletInfo.setBalance(walletInfo.getBalance().subtract(walletTransaction.getAmount()));
+			}else{
+				throw new BadRequestException("Transaction amount is greater than wallet balance");
 			}
 		}else {
 			throw new BadRequestException("Amount is invalid");
@@ -88,5 +90,13 @@ public class WalletServiceImpl implements WalletService {
 	public Wallet getWalletInfo(String customerId) {
 		return walletRepository.findByCustomerId(customerId)
 				.orElseThrow(() -> new ResourceNotFoundException(ResourceType.WALLET));
+	}
+
+	@Override
+	public Map<String, BigDecimal> getBalance(String customerId) {
+		Map<String,BigDecimal> map = new HashMap<>();
+		Wallet wallet = walletRepository.findByCustomerId(customerId).orElseThrow(() -> new ResourceNotFoundException(ResourceType.WALLET));
+		map.put("balance",wallet.getBalance());
+		return map;
 	}
 }
