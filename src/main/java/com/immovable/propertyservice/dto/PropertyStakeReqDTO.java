@@ -15,7 +15,7 @@ import lombok.NoArgsConstructor;
 public class PropertyStakeReqDTO {
 
 	private String customerId;
-	private List<String> propertyId;
+	private String propertyId;
 	private BigDecimal investmentAmount;
 
 }

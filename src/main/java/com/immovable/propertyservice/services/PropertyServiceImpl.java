@@ -39,14 +39,14 @@ public class PropertyServiceImpl implements PropertyService {
 	PropertyStakeInfoRepository propertyStakeInfoRepository;
 
 	@Override
-	public  PropertyResponseDTO getPropertyById(String id) {
+	public PropertyResponseDTO getPropertyById(String id) {
 		PropertyResponseDTO responseDTO = new PropertyResponseDTO();
 		Map<String, Property> map = new HashMap<String, Property>();
 		Optional<Property> propertyById = repository.findById(id);
 		if (propertyById.isPresent()) {
-			
+
 			responseDTO.setProperty(propertyById.get());
-			return responseDTO ;
+			return responseDTO;
 		}
 		return responseDTO;
 
@@ -95,23 +95,20 @@ public class PropertyServiceImpl implements PropertyService {
 
 		Map<String, String> resultMap = new HashMap<String, String>();
 		try {
-			if (propertyStakeReqDTO.getPropertyId().size() > 0) {
-				propertyStakeReqDTO.getPropertyId().forEach(x -> {
 
-					Optional<Property> prodId = repository.findById(x);
-					if (prodId.isPresent()) {
-						Property propertyObj = prodId.get();
-						propertyObj.setPropertyStakeInfo(updatePropertyStakeInfo(propertyObj, propertyStakeReqDTO));
-						repository.save(propertyObj);
-					}
-
-				});
-				resultMap.put("status", "success");
+			Optional<Property> prodId = repository.findById(propertyStakeReqDTO.getPropertyId());
+			if (prodId.isPresent()) {
+				Property propertyObj = prodId.get();
+				propertyObj.setPropertyStakeInfo(updatePropertyStakeInfo(propertyObj, propertyStakeReqDTO));
+				repository.save(propertyObj);
 			}
+
+			resultMap.put("status", "success");
+
 		} catch (Exception e) {
 			resultMap.put("status", e.getMessage());
 			e.printStackTrace();
-			
+
 		}
 		return resultMap;
 	}
@@ -125,9 +122,9 @@ public class PropertyServiceImpl implements PropertyService {
 				.add(propertyStakeReqDTO.getInvestmentAmount());
 		BigDecimal totalAvaliableAmount = propetyInvestAmount.subtract(StackInvestmentAmount);
 
-		BigDecimal fundedAmtPer = StackInvestmentAmount.divide(propetyInvestAmount,2,RoundingMode.HALF_UP);
+		BigDecimal fundedAmtPer = StackInvestmentAmount.divide(propetyInvestAmount, 2, RoundingMode.HALF_UP);
 
-		BigDecimal stackAvaliPer = totalAvaliableAmount.divide(propetyInvestAmount,2,RoundingMode.HALF_UP);
+		BigDecimal stackAvaliPer = totalAvaliableAmount.divide(propetyInvestAmount, 2, RoundingMode.HALF_UP);
 
 		BigDecimal avalible = stackAvaliPer.multiply(new BigDecimal("100"));
 		BigDecimal multiply = fundedAmtPer.multiply(new BigDecimal("100"));
