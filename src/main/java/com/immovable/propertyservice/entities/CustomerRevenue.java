@@ -22,6 +22,6 @@ public class CustomerRevenue {
 	private String year; 
 	private BigDecimal actualAmount;
 	private BigDecimal sentAmount ;
-	private Date depsoitedDate;
+	private Date depositedDate;
 	private Date createdDt;
 }

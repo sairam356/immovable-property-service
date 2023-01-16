@@ -1,5 +1,6 @@
 package com.immovable.propertyservice.services;
 
+import com.immovable.propertyservice.dto.WalletDto;
 import com.immovable.propertyservice.enums.ResourceType;
 import com.immovable.propertyservice.dto.WalletTransactionDto;
 import com.immovable.propertyservice.entities.Wallet;
@@ -31,21 +32,11 @@ public class WalletServiceImpl implements WalletService {
 	private WalletTransactionRepository walletTransactionRepository;
 
 	@Override
-	public Wallet save(Wallet wallet) {
-		log.info("The wallet is being updated...");
-		WalletTransaction walletTransactionDto = wallet.getWalletTransactions().get(0);
-		WalletTransaction walletTransaction = new WalletTransaction();
-		walletTransaction.setTransactionStatus(walletTransactionDto.getTransactionStatus());
-		walletTransaction.setTransactionType(walletTransactionDto.getTransactionType());
-		walletTransaction.setAmount(walletTransactionDto.getAmount());
-		walletTransaction.setWalletId(wallet.getId());
-		walletTransaction.setTransactionId(UUID.randomUUID().toString());
-		walletTransaction.setCreatedDate(LocalDateTime.now());
-		if (!CollectionUtils.isEmpty(wallet.getWalletTransactions())) {
-			updateWalletBalance(wallet, walletTransaction);
-		}
-		WalletTransaction tranObj = walletTransactionRepository.save(walletTransaction);
-		wallet.setWalletTransactions(new ArrayList<>(Collections.singleton(tranObj)));
+	public Wallet save(WalletDto walletDto) {
+		log.info("The wallet is being saved...");
+		Wallet wallet = new Wallet();
+		wallet.setCustomerId(walletDto.getCustomerId());
+		wallet.setBalance(walletDto.getBalance());
 		wallet.setCreatedDate(LocalDateTime.now());
 		return walletRepository.save(wallet);
 	}
@@ -75,7 +66,7 @@ public class WalletServiceImpl implements WalletService {
 		if (BigDecimalUtils.checkIfPositiveNonZero(walletTransaction.getAmount())) {
 			if (walletTransaction.getTransactionType().name().equalsIgnoreCase(TransactionType.DEPOSIT.name()) || walletTransaction.getTransactionType().name().equalsIgnoreCase(TransactionType.SELL.name())) {
 				walletInfo.setBalance(walletInfo.getBalance().add(walletTransaction.getAmount()));
-			} else if (BigDecimalUtils.checkIf(walletTransaction.getAmount(), CompareOperator.LESS_THAN_OR_EQUALS.name(), walletInfo.getBalance()) && (walletTransaction.getTransactionType().name().equalsIgnoreCase(TransactionType.WITHDRAW.name())
+			} else if (verifyTransaction(walletInfo.getBalance(),walletTransaction.getAmount()) && (walletTransaction.getTransactionType().name().equalsIgnoreCase(TransactionType.WITHDRAW.name())
 					|| walletTransaction.getTransactionType().name().equalsIgnoreCase(TransactionType.BUY.name()))){
 				walletInfo.setBalance(walletInfo.getBalance().subtract(walletTransaction.getAmount()));
 			}else{
@@ -98,5 +89,15 @@ public class WalletServiceImpl implements WalletService {
 		Wallet wallet = walletRepository.findByCustomerId(customerId).orElseThrow(() -> new ResourceNotFoundException(ResourceType.WALLET));
 		map.put("balance",wallet.getBalance());
 		return map;
+	}
+
+	@Override
+	public boolean isValidTransaction(WalletTransactionDto walletTransactionDto) {
+		Wallet wallet = walletRepository.findByCustomerId(walletTransactionDto.getCustomerId()).orElseThrow(() -> new ResourceNotFoundException(ResourceType.WALLET));
+		return verifyTransaction(wallet.getBalance(), walletTransactionDto.getAmount());
+	}
+
+	private boolean verifyTransaction(BigDecimal walletBalance, BigDecimal transactionAmount) {
+		return BigDecimalUtils.checkIf(transactionAmount, CompareOperator.LESS_THAN_OR_EQUALS.name(), walletBalance);
 	}
 }

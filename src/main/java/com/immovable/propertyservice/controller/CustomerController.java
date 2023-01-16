@@ -1,11 +1,8 @@
 package com.immovable.propertyservice.controller;
 
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import java.math.BigDecimal;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +22,15 @@ public class CustomerController {
 	public Map<String,String> saveCustomer(@RequestBody Customer customer) {
 		return customerService.saveCustomer(customer);
 
+	}
+
+	@PutMapping("/updateCustomerStake")
+	public Map<String, String>updateCustomerStake(@RequestBody Customer customer){
+		return customerService.updateCustomerStake(customer);
+	}
+	@GetMapping("/investment")
+	public Map<String, BigDecimal> getCustomerInvestment(@PathVariable("customerId") String customerId){
+		return customerService.getInvestedAmount(customerId);
 	}
 
 }

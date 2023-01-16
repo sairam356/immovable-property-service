@@ -1,5 +1,6 @@
 package com.immovable.propertyservice.controller;
 
+import com.immovable.propertyservice.dto.WalletDto;
 import com.immovable.propertyservice.dto.WalletTransactionDto;
 import com.immovable.propertyservice.entities.Wallet;
 import com.immovable.propertyservice.entities.WalletTransaction;
@@ -20,7 +21,7 @@ public class WalletController {
 
     @PostMapping("/save")
     @ResponseStatus(HttpStatus.CREATED)
-    public Wallet saveWallet(@RequestBody Wallet wallet){
+    public Wallet saveWallet(@RequestBody WalletDto wallet){
         return walletService.save(wallet);
     }
 
@@ -38,5 +39,10 @@ public class WalletController {
     @GetMapping("/walletBalance/{customerId}")
     public Map<String,BigDecimal> getWalletBalance(@PathVariable("customerId") String customerId){
         return walletService.getBalance(customerId);
+    }
+
+    @GetMapping("/verifyAmount")
+    public boolean verify(@RequestBody WalletTransactionDto walletTransactionDto){
+        return walletService.isValidTransaction(walletTransactionDto);
     }
 }

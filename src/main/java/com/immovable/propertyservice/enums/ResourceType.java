@@ -1,5 +1,5 @@
 package com.immovable.propertyservice.enums;
 
 public enum ResourceType {
-   WALLET, WALLET_TRANSACTION,PROPERTY
+   WALLET, WALLET_TRANSACTION, CUSTOMER, PROPERTY
 }
