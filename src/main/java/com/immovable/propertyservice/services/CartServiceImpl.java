@@ -48,7 +48,7 @@ public class CartServiceImpl implements CartService {
 		cart.setCartItems(cartItemsList);
 		cart.setStatus("ACTIVE");
 		cartRepository.save(cart);
-		responseMap.put("cart","cart info has been stored into DB successfully");
+		responseMap.put("status","Success");
 		return responseMap;
 	}
 
@@ -102,8 +102,8 @@ public class CartServiceImpl implements CartService {
 	}
 
 	@Override
-	public Map<String, Long> getCartsItems(String cartId, String customerId) {
-		Optional<Cart> cart = cartRepository.findByCustomerId(customerId);
+	public Map<String, Long> getCartsItems(String customerId) {
+		Optional<Cart> cart = cartRepository.findByCustomerIdAndStatus(customerId,"ACTIVE");
 		Map<String, Long> cartItemsMap = new HashMap<>();
 		if (cart.get().getStatus().equals("ACTIVE")) {
 			Long cartItemsCount = cart.get().getCartItems().stream().filter(cartItem -> cartItem.getStatus().equals("ACTIVE")).count();

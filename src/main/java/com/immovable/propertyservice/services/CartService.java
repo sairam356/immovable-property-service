@@ -17,5 +17,5 @@ public interface CartService {
 
     public String cartUpdateOnPaymentStatus(CartUpdateRequestDto cartUpdateRequestDto,String status);
 
-    public Map<String, Long> getCartsItems(String cartId, String customerId);
+    public Map<String, Long> getCartsItems(String customerId);
 }

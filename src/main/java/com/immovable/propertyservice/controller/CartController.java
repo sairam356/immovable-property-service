@@ -51,9 +51,9 @@ public class CartController {
 
     }
 
-    @GetMapping("/{id}/{customerId}")
-    public Map<String, Long> getCartsItemsAndCount(@PathVariable String id, @PathVariable String customerId) {
-        return cartService.getCartsItems(id,customerId);
+    @GetMapping("/count/{customerId}")
+    public Map<String, Long> getCartsItemsAndCount(@PathVariable String customerId) {
+        return cartService.getCartsItems(customerId);
 
     }
 
