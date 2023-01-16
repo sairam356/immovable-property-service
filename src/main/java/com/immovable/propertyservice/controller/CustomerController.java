@@ -7,6 +7,8 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+
+import com.immovable.propertyservice.dto.CustomerStakeDTO;
 import com.immovable.propertyservice.entities.Customer;
 import com.immovable.propertyservice.services.CustomerService;
 
@@ -25,8 +27,8 @@ public class CustomerController {
 	}
 
 	@PutMapping("/updateCustomerStake")
-	public Map<String, String>updateCustomerStake(@RequestBody Customer customer){
-		return customerService.updateCustomerStake(customer);
+	public Map<String, String>updateCustomerStake(@RequestBody CustomerStakeDTO customerStakeDTO){
+		return customerService.updateCustomerStake(customerStakeDTO);
 	}
 	@GetMapping("/investment")
 	public Map<String, BigDecimal> getCustomerInvestment(@PathVariable("customerId") String customerId){

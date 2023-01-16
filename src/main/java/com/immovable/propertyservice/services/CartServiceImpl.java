@@ -90,7 +90,7 @@ public class CartServiceImpl implements CartService {
 	public String cartUpdateOnPaymentStatus(CartUpdateRequestDto cartUpdateRequestDto, String status) {
 		Optional<Cart> cart = null;
 		if (status.equalsIgnoreCase("INACTIVE")) {
-			cart = cartRepository.findByCustomerId(cartUpdateRequestDto.getCustomerId());
+			cart = cartRepository.findByCustomerIdAndStatus(cartUpdateRequestDto.getCustomerId(),"ACTIVE");
 			for (CartItems cartItem : cart.get().getCartItems()) {
 				cartItem.setStatus("INACTIVE");
 				cartItemsRepository.save(cartItem);

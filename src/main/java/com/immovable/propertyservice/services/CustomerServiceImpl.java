@@ -5,7 +5,11 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
+import com.immovable.propertyservice.dto.CartUpdateRequestDto;
+import com.immovable.propertyservice.dto.CustomerStakeDTO;
+import com.immovable.propertyservice.dto.PropertyStakeReqDTO;
 import com.immovable.propertyservice.dto.WalletDto;
 import com.immovable.propertyservice.entities.CustomerPropertiesStack;
 import com.immovable.propertyservice.entities.CustomerRevenue;
@@ -30,6 +34,12 @@ public class CustomerServiceImpl implements CustomerService {
 	@Autowired
 	private WalletService walletService;
 
+	@Autowired
+	private PropertyService propertyService;
+
+	@Autowired
+	private CartService cartService;
+
 	@Override
 	@Transactional
 	public Map<String, String> saveCustomer(Customer customer) {
@@ -39,11 +49,11 @@ public class CustomerServiceImpl implements CustomerService {
 			Customer saveCustomerObj = saveCustomerObj(customer);
 
 			Wallet walletObj = getWalletObj(saveCustomerObj);
-			
+
 			saveCustomerObj.setWallet(walletObj);
-			
+
 			custRepository.save(saveCustomerObj);
-			
+
 			respMap.put("status", "success");
 
 		} catch (Exception e) {
@@ -54,19 +64,60 @@ public class CustomerServiceImpl implements CustomerService {
 
 	@Override
 	public Map<String, BigDecimal> getInvestedAmount(String customerId) {
-		 Customer customer = custRepository.findById(customerId).orElseThrow(() -> new ResourceNotFoundException(ResourceType.CUSTOMER));
-		 List<CustomerPropertiesStack> revenues = customer.getPropertiesStack();
-		 if(!CollectionUtils.isEmpty(revenues)){
-			 new HashMap<String, BigDecimal>().put("investedAmount",revenues.parallelStream().map(CustomerPropertiesStack::getInvestedamount).reduce(
-					 BigDecimal.ZERO, BigDecimal::add));;
-		 }
-		 return Collections.EMPTY_MAP;
+		Customer customer = custRepository.findById(customerId)
+				.orElseThrow(() -> new ResourceNotFoundException(ResourceType.CUSTOMER));
+		List<CustomerPropertiesStack> revenues = customer.getPropertiesStack();
+		if (!CollectionUtils.isEmpty(revenues)) {
+			new HashMap<String, BigDecimal>().put("investedAmount", revenues.parallelStream()
+					.map(CustomerPropertiesStack::getInvestedamount).reduce(BigDecimal.ZERO, BigDecimal::add));
+			;
+		}
+		return Collections.EMPTY_MAP;
 	}
 
 	@Override
-	public Map<String, String> updateCustomerStake(Customer customer) {
-		custRepository.findById(customer.getId()).orElseThrow(() -> new ResourceNotFoundException(ResourceType.CUSTOMER));
-		return null;
+	public Map<String, String> updateCustomerStake(CustomerStakeDTO customerStakeDTO) {
+
+		Map<String, String> map = new HashMap<>();
+		try {
+			Optional<Customer> custObj = custRepository.findById(customerStakeDTO.getCustomerId());
+			if (custObj.isPresent()) {
+				boolean updatePropertyStake = updatePropertyStake(customerStakeDTO.getPropertyStakeReDTO());
+
+				if (updatePropertyStake) {
+
+					CartUpdateRequestDto requestDTO = new CartUpdateRequestDto();
+					requestDTO.setCustomerId(custObj.get().getId());
+
+					cartService.cartUpdateOnPaymentStatus(requestDTO, "INACTIVE");
+
+					map.put("status", "Success");
+
+				} else {
+					map.put("status", "Failure");
+				}
+			}
+			
+		} catch (Exception e) {
+			map.put("status", "Failure");
+			e.printStackTrace();
+
+		}
+		return map;
+
+	}
+
+	private boolean updatePropertyStake(List<PropertyStakeReqDTO> propertyStakeReDTO) {
+		try {
+			propertyStakeReDTO.forEach(pstkObj -> {
+				propertyService.updateStakeInfo(pstkObj);
+
+			});
+			return true;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return false;
+		}
 	}
 
 	public Wallet getWalletObj(Customer customer) {

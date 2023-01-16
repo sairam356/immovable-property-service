@@ -3,6 +3,7 @@ package com.immovable.propertyservice.services;
 import java.math.BigDecimal;
 import java.util.Map;
 
+import com.immovable.propertyservice.dto.CustomerStakeDTO;
 import com.immovable.propertyservice.entities.Customer;
 
 public interface CustomerService {
@@ -11,5 +12,5 @@ public interface CustomerService {
 
     Map<String, BigDecimal> getInvestedAmount(String customerId);
 
-    Map<String, String> updateCustomerStake(Customer customer);
+    Map<String, String> updateCustomerStake(CustomerStakeDTO customerStakeDTO);
 }
