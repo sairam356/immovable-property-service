@@ -1,6 +1,7 @@
 package com.immovable.propertyservice.services;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -14,7 +15,10 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 
 import com.immovable.propertyservice.dto.CartUpdateRequestDto;
+import com.immovable.propertyservice.dto.CustomerResponseDto;
 import com.immovable.propertyservice.dto.CustomerStakeDTO;
+import com.immovable.propertyservice.dto.PropertiesStack;
+import com.immovable.propertyservice.dto.PropertyResponseDTO;
 import com.immovable.propertyservice.dto.PropertyStakeReqDTO;
 import com.immovable.propertyservice.dto.WalletDto;
 import com.immovable.propertyservice.entities.Customer;
@@ -22,13 +26,17 @@ import com.immovable.propertyservice.entities.CustomerPropertiesStack;
 import com.immovable.propertyservice.entities.Wallet;
 import com.immovable.propertyservice.enums.ResourceType;
 import com.immovable.propertyservice.exception.ResourceNotFoundException;
+import com.immovable.propertyservice.repo.CustomerPropertiesStackRepoistory;
 import com.immovable.propertyservice.repo.CustomerRepoistory;
 
 @Service
 public class CustomerServiceImpl implements CustomerService {
 
 	@Autowired
-	CustomerRepoistory custRepository;
+	private CustomerRepoistory custRepository;
+
+	@Autowired
+	private CustomerPropertiesStackRepoistory propertyStackRepository;
 
 	@Autowired
 	private WalletService walletService;
@@ -51,9 +59,10 @@ public class CustomerServiceImpl implements CustomerService {
 
 			saveCustomerObj.setWallet(walletObj);
 
-			custRepository.save(saveCustomerObj);
+			Customer custResponse = custRepository.save(saveCustomerObj);
 
 			respMap.put("status", "success");
+			respMap.put("customerId", custResponse.getId());
 
 		} catch (Exception e) {
 			respMap.put("status", "failure");
@@ -96,7 +105,7 @@ public class CustomerServiceImpl implements CustomerService {
 					map.put("status", "Failure");
 				}
 			}
-			
+
 		} catch (Exception e) {
 			map.put("status", "Failure");
 			e.printStackTrace();
@@ -106,14 +115,68 @@ public class CustomerServiceImpl implements CustomerService {
 
 	}
 
+	public CustomerResponseDto retrieveCustomerDetailsById(String customerId) {
+
+		CustomerResponseDto customerResponse = new CustomerResponseDto();
+
+		Optional<Customer> customer = custRepository.findById(customerId);
+		Customer customerObj = customer.get();
+		customerResponse.setId(customerObj.getId());
+		customerResponse.setFirstName(customerObj.getFirstName());
+		customerResponse.setLastName(customerObj.getLastName());
+		customerResponse.setPassport(customerObj.getPassport());
+		customerResponse.setAddress(customerObj.getAddress());
+		customerResponse.setUserId(customerObj.getUserId());
+
+		List<CustomerPropertiesStack> propertiesStack = propertyStackRepository.findAllByCustomerId(customerId);
+
+		customerObj.setPropertiesStack(propertiesStack);
+
+		if (customer.isPresent() && !CollectionUtils.isEmpty(customerObj.getPropertiesStack())) {
+
+			List<PropertiesStack> propertyLst = new ArrayList<>();
+
+			for (CustomerPropertiesStack property : customerObj.getPropertiesStack()) {
+				PropertiesStack prop = mapPropertyToCustomer(property);
+				propertyLst.add(prop);
+			}
+			customerResponse.setPropertyStack(propertyLst);
+			customerResponse.setPropertyCounter(propertyLst.size());
+		}
+		customerResponse.setWallet(walletService.getWalletInfo(customerId));
+
+		customerResponse.setCart(cartService.getCartDetails(customerId));
+
+		return customerResponse;
+	}
+
+	private PropertiesStack mapPropertyToCustomer(CustomerPropertiesStack customerPropertystack) {
+
+		String propertyId = customerPropertystack.getPropertyId();
+		PropertyResponseDTO propertyDto = propertyService.getPropertyById(propertyId);
+
+		if (propertyDto != null) {
+
+			PropertiesStack propertiesStack = new PropertiesStack();
+			propertiesStack.setCreatedDate(customerPropertystack.getCreatedDate());
+			propertiesStack.setStakepercentage(customerPropertystack.getStakepercentage());
+			propertiesStack.setInvestedamount(customerPropertystack.getInvestedamount());
+			propertiesStack.setProperty(propertyDto.getProperty());
+			propertiesStack.setId(customerPropertystack.getId());
+
+			return propertiesStack;
+		}
+		return null;
+	}
+
 	private boolean updatePropertyStake(List<PropertyStakeReqDTO> propertyStakeReDTO) {
 		try {
 			propertyStakeReDTO.forEach(pstkObj -> {
 				Map<String, BigDecimal> updateStakeInfo = propertyService.updateStakeInfo(pstkObj);
-				
+
 				/*
 				 * 
-				 *   update customer stak code .
+				 * update customer stak code .
 				 */
 
 			});

@@ -23,6 +23,7 @@ public class Customer {
 	private String passport;
 	private String address;
 	private String userId;
+	
 	@DBRef
 	private List<CustomerPropertiesStack> propertiesStack;
 	@DBRef

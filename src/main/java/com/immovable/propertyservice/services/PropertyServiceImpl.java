@@ -42,7 +42,6 @@ public class PropertyServiceImpl implements PropertyService {
 	@Override
 	public PropertyResponseDTO getPropertyById(String id) {
 		PropertyResponseDTO responseDTO = new PropertyResponseDTO();
-		Map<String, Property> map = new HashMap<String, Property>();
 		Optional<Property> propertyById = repository.findById(id);
 		if (propertyById.isPresent()) {
 
