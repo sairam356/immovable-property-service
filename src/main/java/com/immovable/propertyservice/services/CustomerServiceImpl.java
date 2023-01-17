@@ -7,23 +7,22 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
-import com.immovable.propertyservice.dto.CartUpdateRequestDto;
-import com.immovable.propertyservice.dto.CustomerStakeDTO;
-import com.immovable.propertyservice.dto.PropertyStakeReqDTO;
-import com.immovable.propertyservice.dto.WalletDto;
-import com.immovable.propertyservice.entities.CustomerPropertiesStack;
-import com.immovable.propertyservice.entities.CustomerRevenue;
-import com.immovable.propertyservice.enums.ResourceType;
-import com.immovable.propertyservice.exception.ResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
-
-import com.immovable.propertyservice.entities.Customer;
-import com.immovable.propertyservice.entities.Wallet;
-import com.immovable.propertyservice.repo.CustomerRepoistory;
 import org.springframework.util.CollectionUtils;
+
+import com.immovable.propertyservice.dto.CartUpdateRequestDto;
+import com.immovable.propertyservice.dto.CustomerStakeDTO;
+import com.immovable.propertyservice.dto.PropertyStakeReqDTO;
+import com.immovable.propertyservice.dto.WalletDto;
+import com.immovable.propertyservice.entities.Customer;
+import com.immovable.propertyservice.entities.CustomerPropertiesStack;
+import com.immovable.propertyservice.entities.Wallet;
+import com.immovable.propertyservice.enums.ResourceType;
+import com.immovable.propertyservice.exception.ResourceNotFoundException;
+import com.immovable.propertyservice.repo.CustomerRepoistory;
 
 @Service
 public class CustomerServiceImpl implements CustomerService {
@@ -110,7 +109,12 @@ public class CustomerServiceImpl implements CustomerService {
 	private boolean updatePropertyStake(List<PropertyStakeReqDTO> propertyStakeReDTO) {
 		try {
 			propertyStakeReDTO.forEach(pstkObj -> {
-				propertyService.updateStakeInfo(pstkObj);
+				Map<String, BigDecimal> updateStakeInfo = propertyService.updateStakeInfo(pstkObj);
+				
+				/*
+				 * 
+				 *   update customer stak code .
+				 */
 
 			});
 			return true;

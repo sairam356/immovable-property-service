@@ -1,5 +1,6 @@
 package com.immovable.propertyservice.services;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
 
@@ -15,7 +16,7 @@ public interface PropertyService {
 	
 	public  PropertyResponseDTO getPropertyById(String id);
 	
-	public Map<String, String> updateStakeInfo(PropertyStakeReqDTO propertyStakeReqDTO);
+	public Map<String, BigDecimal> updateStakeInfo(PropertyStakeReqDTO propertyStakeReqDTO);
 	
 	public void dummyApiToCreateAProperty();
 	

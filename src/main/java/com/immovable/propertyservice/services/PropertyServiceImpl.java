@@ -18,6 +18,7 @@ import com.immovable.propertyservice.entities.Property;
 import com.immovable.propertyservice.entities.PropertyMetaData;
 import com.immovable.propertyservice.entities.PropertyRevenueInfo;
 import com.immovable.propertyservice.entities.PropertyStakeInfo;
+import com.immovable.propertyservice.enums.TransactionType;
 import com.immovable.propertyservice.repo.PropertyMetaDataRepoistory;
 import com.immovable.propertyservice.repo.PropertyRepoistory;
 import com.immovable.propertyservice.repo.PropertyRevenueInfoRepository;
@@ -91,22 +92,30 @@ public class PropertyServiceImpl implements PropertyService {
 	}
 
 	@Override
-	public Map<String, String> updateStakeInfo(PropertyStakeReqDTO propertyStakeReqDTO) {
+	public Map<String, BigDecimal> updateStakeInfo(PropertyStakeReqDTO propertyStakeReqDTO) {
 
-		Map<String, String> resultMap = new HashMap<String, String>();
+		Map<String, BigDecimal> resultMap = new HashMap<>();
+
 		try {
 
 			Optional<Property> prodId = repository.findById(propertyStakeReqDTO.getPropertyId());
 			if (prodId.isPresent()) {
 				Property propertyObj = prodId.get();
-				propertyObj.setPropertyStakeInfo(updatePropertyStakeInfo(propertyObj, propertyStakeReqDTO));
+				BigDecimal propetyInvestAmount = propertyObj.getTotalInvestmentCost();
+
+				BigDecimal custPer = propertyStakeReqDTO.getInvestmentAmount().divide(propetyInvestAmount, 2,
+						RoundingMode.HALF_UP);
+
+				PropertyStakeInfo updatePropertyStakeInfo = updatePropertyStakeInfo(propertyObj, propertyStakeReqDTO);
+
+				propertyObj.setPropertyStakeInfo(updatePropertyStakeInfo);
+
 				repository.save(propertyObj);
+				resultMap.put("customerStack", custPer);
 			}
 
-			resultMap.put("status", "success");
-
 		} catch (Exception e) {
-			resultMap.put("status", e.getMessage());
+			resultMap.put("status", new BigDecimal("0.00"));
 			e.printStackTrace();
 
 		}
@@ -118,23 +127,41 @@ public class PropertyServiceImpl implements PropertyService {
 		BigDecimal propetyInvestAmount = propertyObj.getTotalInvestmentCost();
 		PropertyStakeInfo obj = new PropertyStakeInfo();
 		PropertyStakeInfo propertyStakeInfo = propertyObj.getPropertyStakeInfo();
-		BigDecimal StackInvestmentAmount = propertyStakeInfo.getTotalInvestmentAmount()
-				.add(propertyStakeReqDTO.getInvestmentAmount());
-		BigDecimal totalAvaliableAmount = propetyInvestAmount.subtract(StackInvestmentAmount);
+		if (propertyStakeReqDTO.getTranscationType().equalsIgnoreCase(TransactionType.BUY.name())) {
+			BigDecimal StackInvestmentAmount = propertyStakeInfo.getTotalInvestmentAmount()
+					.add(propertyStakeReqDTO.getInvestmentAmount());
+			BigDecimal totalAvaliableAmount = propetyInvestAmount.subtract(StackInvestmentAmount);
 
-		BigDecimal fundedAmtPer = StackInvestmentAmount.divide(propetyInvestAmount, 2, RoundingMode.HALF_UP);
+			BigDecimal fundedAmtPer = StackInvestmentAmount.divide(propetyInvestAmount, 2, RoundingMode.HALF_UP);
 
-		BigDecimal stackAvaliPer = totalAvaliableAmount.divide(propetyInvestAmount, 2, RoundingMode.HALF_UP);
+			BigDecimal stackAvaliPer = totalAvaliableAmount.divide(propetyInvestAmount, 2, RoundingMode.HALF_UP);
 
-		BigDecimal avalible = stackAvaliPer.multiply(new BigDecimal("100"));
-		BigDecimal multiply = fundedAmtPer.multiply(new BigDecimal("100"));
-		obj.setStake_avaliable(avalible);
-		obj.setStake_funded(multiply);
-		obj.setTotalAvaliableAmount(totalAvaliableAmount);
-		obj.setTotalInvestmentAmount(StackInvestmentAmount);
-		obj.setCreatedDt(new Date());
-		obj.setId(propertyStakeInfo.getId());
+			BigDecimal avalible = stackAvaliPer.multiply(new BigDecimal("100"));
+			BigDecimal multiply = fundedAmtPer.multiply(new BigDecimal("100"));
+			obj.setStake_avaliable(avalible);
+			obj.setStake_funded(multiply);
+			obj.setTotalAvaliableAmount(totalAvaliableAmount);
+			obj.setTotalInvestmentAmount(StackInvestmentAmount);
+			obj.setCreatedDt(new Date());
+			obj.setId(propertyStakeInfo.getId());
+		} else {
+			BigDecimal StackInvestmentAmount = propertyStakeInfo.getTotalInvestmentAmount()
+					.subtract(propertyStakeReqDTO.getInvestmentAmount());
+			BigDecimal totalAvaliableAmount = propetyInvestAmount.add(StackInvestmentAmount);
 
+			BigDecimal fundedAmtPer = StackInvestmentAmount.divide(propetyInvestAmount, 2, RoundingMode.HALF_UP);
+
+			BigDecimal stackAvaliPer = totalAvaliableAmount.divide(propetyInvestAmount, 2, RoundingMode.HALF_UP);
+
+			BigDecimal avalible = stackAvaliPer.multiply(new BigDecimal("100"));
+			BigDecimal multiply = fundedAmtPer.multiply(new BigDecimal("100"));
+			obj.setStake_avaliable(avalible);
+			obj.setStake_funded(multiply);
+			obj.setTotalAvaliableAmount(totalAvaliableAmount);
+			obj.setTotalInvestmentAmount(StackInvestmentAmount);
+			obj.setCreatedDt(new Date());
+			obj.setId(propertyStakeInfo.getId());
+		}
 		return propertyStakeInfoRepository.save(obj);
 	}
 

@@ -1,5 +1,6 @@
 package com.immovable.propertyservice.controller;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 
@@ -47,7 +48,7 @@ public class PropertyController {
 	}
 
 	@PostMapping("/allocateStake")
-	public Map<String, String> updateStakeInfo(@RequestBody PropertyStakeReqDTO propertyStakeReqDTO) {
+	public Map<String, BigDecimal> updateStakeInfo(@RequestBody PropertyStakeReqDTO propertyStakeReqDTO) {
 
 		return propertyService.updateStakeInfo(propertyStakeReqDTO);
 

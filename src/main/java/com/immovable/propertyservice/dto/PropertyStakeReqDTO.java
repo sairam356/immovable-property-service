@@ -17,5 +17,6 @@ public class PropertyStakeReqDTO {
 	private String customerId;
 	private String propertyId;
 	private BigDecimal investmentAmount;
+	private String transcationType;
 
 }
