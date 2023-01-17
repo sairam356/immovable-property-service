@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.immovable.propertyservice.dto.CartItemAmountDTO;
 import com.immovable.propertyservice.dto.CartRequestDto;
 import com.immovable.propertyservice.dto.CartResponseDto;
 import com.immovable.propertyservice.dto.CartUpdateRequestDto;
@@ -39,11 +40,17 @@ public class CartController {
 
 
     @PutMapping("/update")
-    public String getCartUpdate(@RequestBody CartUpdateRequestDto cartUpdateRequestDto) {
+    public  Map<String,String> getCartUpdate(@RequestBody CartUpdateRequestDto cartUpdateRequestDto) {
         return cartService.getCartUpdate(cartUpdateRequestDto);
 
     }
 
+    
+    @PutMapping("/updateAmount")
+    public  Map<String,String> getCartUpdateAmount(@RequestBody CartItemAmountDTO cartItemAmountDTO) {
+        return cartService.getCartUpdateAmount(cartItemAmountDTO);
+
+    }
 
     @PutMapping("/updateOnPayment/{status}")
     public String cartUpdateOnPaymentStatus(@RequestBody CartUpdateRequestDto cartUpdateRequestDto, @PathVariable String status) {

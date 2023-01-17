@@ -2,14 +2,17 @@ package com.immovable.propertyservice.services;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.immovable.propertyservice.dto.CartItemAmountDTO;
 import com.immovable.propertyservice.dto.CartItemsResponseDto;
 import com.immovable.propertyservice.dto.CartRequestDto;
 import com.immovable.propertyservice.dto.CartResponseDto;
@@ -33,22 +36,49 @@ public class CartServiceImpl implements CartService {
 	CartRepository cartRepository;
 
 	@Override
-	public Map<String,String> saveCartDetails(CartRequestDto cartRequestDto) {
-		Map<String , String> responseMap = new HashMap<>();
-		CartItems cartItem = new CartItems();
-		List<CartItems> cartItemsList;
-		cartItem.setPropertyId(cartRequestDto.getPropertyId());
-		cartItem.setPrice(cartRequestDto.getPrice());
-		cartItem.setStatus("ACTIVE");
+	public Map<String, String> saveCartDetails(CartRequestDto cartRequestDto) {
+		Map<String, String> responseMap = new HashMap<>();
 
-		Cart cart = new Cart();
-		cart.setCustomerId(cartRequestDto.getCustomerId());
-		cartItemsList = new ArrayList<>();
-		cartItemsList.add(cartItemsRepository.save(cartItem));
-		cart.setCartItems(cartItemsList);
-		cart.setStatus("ACTIVE");
-		cartRepository.save(cart);
-		responseMap.put("status","Success");
+		String customerId = cartRequestDto.getCustomerId();
+
+		Optional<Cart> cartObj = cartRepository.findByCustomerIdAndStatus(customerId, "ACTIVE");
+
+		if (cartObj.isPresent()) {
+
+			Cart cart = cartObj.get();
+
+			CartItems cartItem = new CartItems();
+
+			cartItem.setPropertyId(cartRequestDto.getPropertyId());
+			cartItem.setPrice(cartRequestDto.getPrice());
+			cartItem.setStatus("ACTIVE");
+
+			List<CartItems> cartItems = cartObj.get().getCartItems();
+			cartItems.add(cartItemsRepository.save(cartItem));
+			cart.setStatus("ACTIVE");
+			cart.setCartItems(cartItems);
+			cartRepository.save(cart);
+			responseMap.put("status", "Success");
+
+		} else {
+
+			Cart cart = new Cart();
+			cart.setCustomerId(cartRequestDto.getCustomerId());
+
+			CartItems cartItem = new CartItems();
+			cartItem.setPropertyId(cartRequestDto.getPropertyId());
+			cartItem.setPrice(cartRequestDto.getPrice());
+			cartItem.setStatus("ACTIVE");
+
+			List<CartItems> cartItemsList = new ArrayList<>();
+
+			cartItemsList.add(cartItemsRepository.save(cartItem));
+			cart.setCartItems(cartItemsList);
+			cart.setStatus("ACTIVE");
+			cartRepository.save(cart);
+			responseMap.put("status", "Success");
+		}
+
 		return responseMap;
 	}
 
@@ -65,9 +95,11 @@ public class CartServiceImpl implements CartService {
 	}
 
 	@Override
-	public String getCartUpdate(CartUpdateRequestDto cartUpdateRequestDto) {
+	public Map<String, String> getCartUpdate(CartUpdateRequestDto cartUpdateRequestDto) {
+		Map<String, String> responseMap = new HashMap<>();
 		Optional<Cart> cart = cartRepository.findByCustomerIdAndStatus(cartUpdateRequestDto.getCustomerId(), "ACTIVE");
-		List<CartItems> cartItemsList = cart.get().getCartItems();
+		List<CartItems> cartItemsList = cart.get().getCartItems().stream()
+				.filter(y -> y.getStatus().equalsIgnoreCase("ACTIVE")).collect(Collectors.toList());
 		if (cartItemsList.size() == cartUpdateRequestDto.getCartItemsIdsList().size()) {
 			setCartItemsStatus(cartUpdateRequestDto);
 			cart.get().setStatus("INACTIVE");
@@ -75,7 +107,9 @@ public class CartServiceImpl implements CartService {
 		} else {
 			setCartItemsStatus(cartUpdateRequestDto);
 		}
-		return "cart updated successfully ";
+		verifyCartItemsAndUpdateCart(cartUpdateRequestDto.getCustomerId());
+		responseMap.put("status", "Success");
+		return responseMap;
 	}
 
 	private void setCartItemsStatus(CartUpdateRequestDto cartUpdateRequestDto) {
@@ -86,11 +120,26 @@ public class CartServiceImpl implements CartService {
 		}
 	}
 
+	private void verifyCartItemsAndUpdateCart(String customerId) {
+		Optional<Cart> cart = cartRepository.findByCustomerIdAndStatus(customerId, "ACTIVE");
+		if (cart.isPresent()) {
+
+			int cartItemsList = cart.get().getCartItems().size();
+			int cartActualSize = cartItemsRepository.findByStatus("INACTIVE").size();
+			if (cartItemsList == cartActualSize) {
+				cart.get().setStatus("INACTIVE");
+				cartRepository.save(cart.get());
+			}
+
+		}
+
+	}
+
 	@Override
 	public String cartUpdateOnPaymentStatus(CartUpdateRequestDto cartUpdateRequestDto, String status) {
 		Optional<Cart> cart = null;
 		if (status.equalsIgnoreCase("INACTIVE")) {
-			cart = cartRepository.findByCustomerIdAndStatus(cartUpdateRequestDto.getCustomerId(),"ACTIVE");
+			cart = cartRepository.findByCustomerIdAndStatus(cartUpdateRequestDto.getCustomerId(), "ACTIVE");
 			for (CartItems cartItem : cart.get().getCartItems()) {
 				cartItem.setStatus("INACTIVE");
 				cartItemsRepository.save(cartItem);
@@ -103,28 +152,29 @@ public class CartServiceImpl implements CartService {
 
 	@Override
 	public Map<String, Long> getCartsItems(String customerId) {
-		Optional<Cart> cart = cartRepository.findByCustomerIdAndStatus(customerId,"ACTIVE");
+		Optional<Cart> cart = cartRepository.findByCustomerIdAndStatus(customerId, "ACTIVE");
 		Map<String, Long> cartItemsMap = new HashMap<>();
 		if (cart.get().getStatus().equals("ACTIVE")) {
-			Long cartItemsCount = cart.get().getCartItems().stream().filter(cartItem -> cartItem.getStatus().equals("ACTIVE")).count();
-			//List<CartItems> itemsList = cart.get().getCartItems().stream().filter(cartItem -> cartItem.getStatus().equals("ACTIVE")).collect(Collectors.toList());
+			Long cartItemsCount = cart.get().getCartItems().stream()
+					.filter(cartItem -> cartItem.getStatus().equals("ACTIVE")).count();
+			// List<CartItems> itemsList =
+			// cart.get().getCartItems().stream().filter(cartItem ->
+			// cartItem.getStatus().equals("ACTIVE")).collect(Collectors.toList());
 			cartItemsMap.put("count", cartItemsCount);
 		}
 		return cartItemsMap;
 	}
 
-
 	// input customerId cartId
-	//return map (count,cartItems)
+	// return map (count,cartItems)
 	private CartResponseDto mapCartToCartRsponeDto(CartResponseDto dto, Cart cart) {
 
 		List<CartItemsResponseDto> itemList = new ArrayList<>();
 
-		BigDecimal totalCartValue = cart.getCartItems().stream()
-				.map(x -> x.getPrice())
-				.reduce(BigDecimal.ZERO, BigDecimal::add);
+		BigDecimal totalCartValue = cart.getCartItems().stream().filter(y -> y.getStatus().equalsIgnoreCase("ACTIVE"))
+				.map(x -> x.getPrice()).reduce(BigDecimal.ZERO, BigDecimal::add);
 
-		cart.getCartItems().forEach(x -> {
+		cart.getCartItems().stream().filter(y -> y.getStatus().equalsIgnoreCase("ACTIVE")).forEach(x -> {
 			CartItemsResponseDto itemDto = new CartItemsResponseDto();
 			itemDto.setId(x.getId());
 			itemDto.setPrice(x.getPrice());
@@ -139,6 +189,21 @@ public class CartServiceImpl implements CartService {
 		dto.setId(cart.getId());
 		dto.setStatus(cart.getStatus());
 		return dto;
+	}
+
+	@Override
+	public Map<String, String> getCartUpdateAmount(CartItemAmountDTO cartItemAmountDTO) {
+		Map<String, String> responseMap = new HashMap<>();
+		Optional<CartItems> findById = cartItemsRepository.findById(cartItemAmountDTO.getCartItemId());
+		if (findById.isPresent()) {
+			CartItems cartItems = findById.get();
+			cartItems.setPrice(new BigDecimal(cartItemAmountDTO.getAmount()));
+			cartItemsRepository.save(cartItems);
+			responseMap.put("status", "Success");
+		}else {
+			responseMap.put("status", "Failure");
+		}
+		return responseMap;
 	}
 
 }

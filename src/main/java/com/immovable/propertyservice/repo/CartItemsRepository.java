@@ -12,4 +12,6 @@ import org.springframework.stereotype.Repository;
 public interface CartItemsRepository extends MongoRepository<CartItems, String> {
 
     List<CartItems> findByPropertyId(String status);
+    
+   List<CartItems> findByStatus(String status);
 }
