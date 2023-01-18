@@ -126,7 +126,7 @@ public class PropertyServiceImpl implements PropertyService {
 		BigDecimal propetyInvestAmount = propertyObj.getTotalInvestmentCost();
 		PropertyStakeInfo obj = new PropertyStakeInfo();
 		PropertyStakeInfo propertyStakeInfo = propertyObj.getPropertyStakeInfo();
-		if (propertyStakeReqDTO.getTranscationType().equalsIgnoreCase(TransactionType.BUY.name())) {
+		if (propertyStakeReqDTO.getTranscationType().equalsIgnoreCase("BUY")) {
 			BigDecimal StackInvestmentAmount = propertyStakeInfo.getTotalInvestmentAmount()
 					.add(propertyStakeReqDTO.getInvestmentAmount());
 			BigDecimal totalAvaliableAmount = propetyInvestAmount.subtract(StackInvestmentAmount);

@@ -3,6 +3,7 @@ package com.immovable.propertyservice.services;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -46,6 +47,9 @@ public class CustomerServiceImpl implements CustomerService {
 
 	@Autowired
 	private CartService cartService;
+	
+	@Autowired
+	private CustomerPropertiesStackRepoistory customerPropertiesStackRepoistory;
 
 	@Override
 	@Transactional
@@ -174,17 +178,22 @@ public class CustomerServiceImpl implements CustomerService {
 			propertyStakeReDTO.forEach(pstkObj -> {
 				Map<String, BigDecimal> updateStakeInfo = propertyService.updateStakeInfo(pstkObj);
 
-				/*
-				 * 
-				 * update customer stak code .
-				 */
-
+				saveCustomerStake(pstkObj, updateStakeInfo);
 			});
 			return true;
 		} catch (Exception e) {
 			e.printStackTrace();
 			return false;
 		}
+	}
+
+	private void saveCustomerStake(PropertyStakeReqDTO pstkObj, Map<String, BigDecimal> updateStakeInfo) {
+		CustomerPropertiesStack customerPropertiesStack = new CustomerPropertiesStack();
+		customerPropertiesStack.setPropertyId(pstkObj.getPropertyId());
+		customerPropertiesStack.setStakepercentage(updateStakeInfo.get("customerStack"));
+		customerPropertiesStack.setInvestedamount(pstkObj.getInvestmentAmount());
+		customerPropertiesStack.setCreatedDate(new Date());
+		customerPropertiesStackRepoistory.save(customerPropertiesStack);
 	}
 
 	public Wallet getWalletObj(Customer customer) {
