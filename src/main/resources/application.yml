@@ -1,11 +1,31 @@
 spring:
   data:
     mongodb:
-      uri: mongodb+srv://sairam356:sairam356@cluster0.psnnnhy.mongodb.net/test
+      uri: mongodb://localhost:27017/?readPreference=primary&appname=MongoDB%20Compass%20Community&ssl=false
+      database: immovable
+  mail:
+    default-encoding: UTF-8
+    host: smtp.gmail.com
+    username: jbansode23@gmail.com
+    password: gujzwguujmeetory
+    port: 587
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+    protocol: smtp
+    test-connection: false
 
 logging:
   level:
-    root: INFO
+    root: DEBUG
+
     
 server:
-  port: 9191
+  port: 8080
+  
+app:
+  banking-service:
+    url: http://localhost:9292/bank
