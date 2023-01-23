@@ -1,8 +1,8 @@
 spring:
   data:
     mongodb:
-      uri: mongodb://localhost:27017/?readPreference=primary&appname=MongoDB%20Compass%20Community&ssl=false
-      database: immovable
+      uri: mongodb+srv://sairam356:sairam356@cluster0.psnnnhy.mongodb.net/test
+     
   mail:
     default-encoding: UTF-8
     host: smtp.gmail.com
